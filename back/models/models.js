@@ -19,6 +19,15 @@ const Sound = sequelize.define('sound', {
     access: {type: DataTypes.STRING, allowNull: false, defaultValue: 'PRIVATE'}
 })
 
+const Category = sequelize.define('category', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false}
+})
+
+const SoundCategory = sequelize.define('sound_category', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+})
+
 const HotKey = sequelize.define('hot_key', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, allowNull: false}
@@ -43,11 +52,17 @@ const Tag = sequelize.define('tag', {
     tag: {type: DataTypes.STRING, allowNull: false}
 })
 
+const Image = sequelize.define('image', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false},
+    path: {type: DataTypes.STRING, allowNull: false}
+})
+
 Country.hasMany(User)
 User.belongsTo(Country)
 
-User.hasMany(Sound)
-Sound.belongsTo(User)
+User.hasMany(Category)
+Category.belongsTo(User)
 
 HotKey.hasMany(Sound)
 Sound.belongsTo(HotKey)
@@ -58,6 +73,9 @@ Sound.belongsTo(SoundType)
 Sound.belongsToMany(Tag, {through: SoundTag})
 Tag.belongsToMany(Sound, {through: SoundTag})
 
+Sound.belongsToMany(Category, {through: SoundCategory})
+Category.belongsToMany(Sound, {through: SoundCategory})
+
 
 module.exports = {
     User,
@@ -66,5 +84,7 @@ module.exports = {
     Country,
     SoundType,
     SoundTag,
-    Tag
+    Tag,
+    Category,
+    SoundCategory
 }

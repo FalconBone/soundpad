@@ -1,5 +1,5 @@
 const ApiError = require("../error/ApiError")
-const { User } = require("../models/models")
+const { User, Category } = require("../models/models")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -29,10 +29,9 @@ class UserController {
             return next(ApiError.badRequest('Пользователь с таким email уже существует'))
         }
 
-        console.log('\nЯ тут вроде норм работаю\n');
         const hashPassword = await bcrypt.hash(password, 5)
-        console.log('\nА тут уже нет\n');
         const user = await User.create({email, password: hashPassword})
+        const defaultCategory = await Category.create({name: 'Мои звуки', userId: user.id})
         
         const token = generateJwt(user.id, email, user.role)
 
