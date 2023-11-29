@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { registration } from "../../http/userAPI"
+import { registration } from "../../http/userapi"
 
 
 export default function RegistrationPage(props){

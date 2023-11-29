@@ -1,26 +1,31 @@
 import { useEffect, useState } from "react";
 import { $authHost } from "../../../http";
+import SoundItem from "./SoundItem";
+import { useLocation, useParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
+import classes from './UserSounds.module.css'
 
 export default function UserSounds(props) {
 
   const [sounds, setSounds] = useState([])
+  const { search } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams()
   
-
+  const getSoundsFormCategory = async () => {
+    const fetchedSounds = await $authHost.get(`sound/getCategorySound${search}`)
+    console.log(fetchedSounds);
+    setSounds(fetchedSounds.data)
+  }
   useEffect(() => {
-    if (props.choosedCategory) {
-      $authHost.post('category/getCategorySound/')
-        .then((res) => {
-          setSounds(res.data)
-      })
-    }
-  })
+    getSoundsFormCategory()
+  }, [])
 
   const [drag, setDrag] = useState(false)
   let style;
   if (drag) {
-    style = "h-full w-full bg-zinc-600"
+    style = "w-full bg-zinc-600 border-collapse min-h-full"
   } else {
-    style = "h-full w-full bg-zinc-900"
+    style = "w-full bg-zinc-900 border-collapse min-h-full"
   }
 
   let dragStartHandler = (e) => {
@@ -33,33 +38,39 @@ export default function UserSounds(props) {
     setDrag(false)
   }
 
-  let onDropHandler = e => {
+  let onDropHandler = async e => {
     e.preventDefault()
 
     let files = [...e.dataTransfer.files]
     const formData = new FormData()
     let badFiles = []
 
-    files.forEach((file,index) => {
+    files.forEach((file, index) => {
       const type = file.name
-                .split('.')
-                .filter(Boolean)
-                .slice(1)
-                .join('.')
+        .split('.')
+        .filter(Boolean)
+        .slice(1)
+        .join('.')
       if (type !== 'wav' && type !== 'mp3') {
-        badFiles.push({name: file.name, message: 'Неподдерживаемый тип файла'})
+        badFiles.push({ name: file.name, message: 'Неподдерживаемый тип файла' })
       } else if (file.size > 400000) {
-        badFiles.push({name: file.name, message: 'Слишком высокий размер файла'})
+        badFiles.push({ name: file.name, message: 'Слишком высокий размер файла' })
       } else {
         formData.append(`sound${index}`, file)
       }
     });
 
-    console.log(formData);
-    $authHost.post('/sound/add', formData)
-    
+    formData.append(`categoryId`, searchParams.get('id'))
+    console.log('Данные загружаются');
+    await $authHost.post('/sound/add', formData)
+      .then((res) => {
+        console.log(res);
+      })
+    console.log('Данные вроде загружены');
 
     setDrag(false)
+    getSoundsFormCategory()
+
   }
 
   return (
@@ -70,20 +81,25 @@ export default function UserSounds(props) {
         onDragLeave={e => dragLeaveHandler(e)}
         onDragOver={e => dragStartHandler(e)}
         onDrop={e => onDropHandler(e)}>
-        <tr>
-          <th>
-            Номер
-          </th>
-          <th>
-            Тег
-          </th>
-          <th>
-            Длительность
-          </th>
-          <th>
-            Клавиша
-          </th>
-        </tr>
+        <thead>
+          <tr className="text-left">
+            <th className="border-r border-white border-solid">
+              Номер
+            </th>
+            <th className="border-r border-white border-solid pl-2">
+              Имя
+            </th>
+            <th className="border-r border-white border-solid pl-2">
+              Длительность
+            </th>
+            <th className=" pl-2">
+              Клавиша
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {sounds.map((sound, index) => <SoundItem sound={sound} key={sound.id} index={index + 1} setCurrentSound={props.setCurrentSound}/>)}
+        </tbody>
       </table>
     </div>
   );

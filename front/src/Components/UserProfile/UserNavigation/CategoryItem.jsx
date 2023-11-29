@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
 export default function CategoryItem(props) {
 
     return (
-      <div>
+      <NavLink to={`/category?id=${props.id}`}>
         {props.name}
-      </div>
+      </NavLink>
     );
   }
   

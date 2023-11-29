@@ -16,7 +16,8 @@ const Sound = sequelize.define('sound', {
     name: {type: DataTypes.STRING, allowNull: false},
     filePath: {type: DataTypes.STRING, allowNull: false},
     weight: {type: DataTypes.INTEGER, allowNull: false},
-    access: {type: DataTypes.STRING, allowNull: false, defaultValue: 'PRIVATE'}
+    access: {type: DataTypes.STRING, allowNull: false, defaultValue: 'PRIVATE'},
+    // duration: {type: DataTypes.INTEGER, allowNull: false},
 })
 
 const Category = sequelize.define('category', {

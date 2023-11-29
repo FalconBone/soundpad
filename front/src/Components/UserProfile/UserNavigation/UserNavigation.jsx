@@ -9,7 +9,7 @@ export default function UserNavigation(props) {
         Категории
       </header>
       <div className="flex flex-column">
-        {props.categories.map(category => <CategoryItem key={category.id} name={category.name}/>)}
+        {props.categories.map(category => <CategoryItem key={category.id} name={category.name} id={category.id}/>)}
       </div>
     </nav>
   );

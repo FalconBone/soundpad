@@ -5,7 +5,7 @@ import {
 import UserProfile from "./Components/UserProfile/UserProfile";
 import AuthorizationPage from "./Components/Authorization/AuthorizationPage";
 import { useEffect, useState } from "react";
-import { checkAuth } from "./http/userAPI";
+import { checkAuth } from './http/userapi.js';
 import RegistrationPage from "./Components/Authorization/RegistrationPage";
 
 export default function App() {
@@ -29,6 +29,10 @@ export default function App() {
   console.log(isLoading);
 
   const router = createBrowserRouter([
+    {
+      path: '/category',
+      element: <UserProfile user={user} isAuth={isAuth}/>
+    },
     {
       path: '/',
       element: <UserProfile user={user} isAuth={isAuth}/>
