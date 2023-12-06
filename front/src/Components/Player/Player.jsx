@@ -17,17 +17,18 @@ export default function Player(props) {
       })
     }
     
-  }, [])
+  }, [props])
+
+  const onClickPlay = () => {
+    props.sound.audio.play()
+  }
 
   return (
     <div className="bg-zinc-800 col-span-2 h-36">
-      <div>
-        Полоска перетаскивания
+      <div style={{textAlign: 'center', marginBottom: '14px', height: '20px'}}>
+        {soundData?.name}
       </div>
-      <div style={{textAlign: 'center', marginBottom: '14px'}}>
-        
-      </div>
-      <div style={{ display: 'flex', border: '1px solid red'}}>
+      <div style={{ display: 'flex'}}>
         <div style={{width: '33%'}}>
           Удалить
         </div>
@@ -36,7 +37,7 @@ export default function Player(props) {
             Назад
           </div>
           <div style={{width: '33%'}}>
-            <div style={{width: '50px', height: '50px', backgroundColor: 'red', borderRadius: '50px', margin: '0 auto'}}>
+            <div style={{width: '50px', height: '50px', backgroundColor: 'red', borderRadius: '50px', margin: '0 auto', cursor: 'pointer'}} onClick={onClickPlay}>
 
             </div>
           </div>

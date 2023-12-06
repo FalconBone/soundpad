@@ -55,9 +55,7 @@ export default function UserProfile(props) {
   }, [])
 
   const user = <React.Fragment>
-    <div className="absolute top-14 right-24 bg-red-600 w-16 h-16 rounded-full cursor-pointer">
-
-    </div>
+ 
     <div className='flex grow w-full'>
       <UserNavigation setChoosedCategory={setChoosedCategory} choosedCategory={choosedCategory} categories={categories}/>
       <UserSounds setCurrentSound={clickOnUserSound} currentSoundId={currentSound?.id}/>

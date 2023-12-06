@@ -6,7 +6,7 @@ export default function SoundItem(props) {
 
     let style
     if (props.currentSoundId === props.sound.id) {
-        style = {border: '1px solid red'}
+        style = {backgroundColor: '#4B4B4B'}
     }
 
     return (
@@ -18,10 +18,10 @@ export default function SoundItem(props) {
                 {props.sound.name}
             </td>
             <td className="pl-2 py-1">
-                0:04
+                -
             </td>
             <td className="pl-2 py-1">
-                F
+                -
             </td>
         </tr>
     )
