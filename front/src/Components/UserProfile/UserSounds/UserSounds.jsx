@@ -16,6 +16,7 @@ export default function UserSounds(props) {
     console.log(fetchedSounds);
     setSounds(fetchedSounds.data)
   }
+
   useEffect(() => {
     getSoundsFormCategory()
   }, [])
@@ -23,9 +24,9 @@ export default function UserSounds(props) {
   const [drag, setDrag] = useState(false)
   let style;
   if (drag) {
-    style = "w-full bg-zinc-600 border-collapse min-h-full"
+    style = "w-full bg-zinc-600 border-collapse"
   } else {
-    style = "w-full bg-zinc-900 border-collapse min-h-full"
+    style = "w-full bg-zinc-900 border-collapse"
   }
 
   let dragStartHandler = (e) => {
@@ -42,6 +43,7 @@ export default function UserSounds(props) {
     e.preventDefault()
 
     let files = [...e.dataTransfer.files]
+    console.log(files[0]);
     const formData = new FormData()
     let badFiles = []
 
@@ -59,7 +61,7 @@ export default function UserSounds(props) {
         formData.append(`sound${index}`, file)
       }
     });
-
+    console.log(formData);
     formData.append(`categoryId`, searchParams.get('id'))
     console.log('Данные загружаются');
     await $authHost.post('/sound/add', formData)
@@ -74,7 +76,7 @@ export default function UserSounds(props) {
   }
 
   return (
-    <div className="bg-zinc-900 grow overflow-y-scroll p-6">
+    <div className="bg-zinc-900 w-full overflow-y-scroll p-6">
       <table
         className={style}
         onDragStart={e => dragStartHandler(e)}
@@ -98,7 +100,7 @@ export default function UserSounds(props) {
           </tr>
         </thead>
         <tbody>
-          {sounds.map((sound, index) => <SoundItem sound={sound} key={sound.id} index={index + 1} setCurrentSound={props.setCurrentSound}/>)}
+          {sounds.map((sound, index) => <SoundItem sound={sound} key={sound.id} index={index + 1} setCurrentSound={props.setCurrentSound} currentSoundId={props.currentSoundId}/>)}
         </tbody>
       </table>
     </div>

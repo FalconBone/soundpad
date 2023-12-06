@@ -4,8 +4,13 @@ export default function SoundItem(props) {
         props.setCurrentSound(props.sound.id)
     }
 
+    let style
+    if (props.currentSoundId === props.sound.id) {
+        style = {border: '1px solid red'}
+    }
+
     return (
-        <tr onClick={onClick} className="cursor-pointer">
+        <tr onClick={onClick} className="cursor-pointer" style={style}>
             <td>
                 {props.index}
             </td>

@@ -79,6 +79,12 @@ class SoundController {
 
         res.sendFile(path.resolve(__dirname, '..', 'static', sound.dataValues.filePath))
     }
+    async getSoundInfo(req, res) {
+        let id = req.body.id;
+        const sound = await Sound.findByPk(id)
+
+        res.send(sound)
+    }
 }
 
 module.exports = new SoundController()

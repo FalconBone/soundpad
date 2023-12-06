@@ -53,3 +53,29 @@ table {
     height: 100%;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+thead, tbody, tr, td, th{}
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+thead th:nth-child(1) {
+    width: 10%;
+  }
+  
+  thead th:nth-child(2) {
+    width: 60%;
+  }
+  
+  thead th:nth-child(3) {
+    width: 15%;
+  }
+  
+  thead th:nth-child(4) {
+    width: 15%;
+  }
+  
+  th,
+  td {
+    padding: 20px;
+  }

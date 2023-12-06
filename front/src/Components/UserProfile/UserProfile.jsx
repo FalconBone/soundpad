@@ -10,20 +10,25 @@ export default function UserProfile(props) {
   const [isLoading, setIsLoading] = useState(true)
   const [categories, setCategories] = useState([])
   const [choosedCategory, setChoosedCategory] = useState()
+
   const [currentSound, setCurrentSound] = useState(null)
+
   const navigate = useNavigate()
 
   const clickOnUserSound = async (soundId) => {
-    await $authHost.post('sound/get', {id: soundId}, {responseType: 'blob'})
+    if (currentSound?.id !== soundId) {
+      await $authHost.post('sound/get', {id: soundId}, {responseType: 'blob'})
       .then((res) => {
         let blob = new Blob([res.data], { type: "audio/mp3" })
         let downloadUrl = window.URL.createObjectURL(blob);
         const audio = new Audio(downloadUrl)
         audio.load()
-        audio.play()
-        setCurrentSound(audio)
-        // console.log(blob);
+        setCurrentSound({audio: audio, id: soundId})
       })
+    } else {
+      currentSound.audio.play()
+    }
+    
   }
 
   useEffect(() => {
@@ -50,12 +55,15 @@ export default function UserProfile(props) {
   }, [])
 
   const user = <React.Fragment>
+    <div className="absolute top-14 right-24 bg-red-600 w-16 h-16 rounded-full cursor-pointer">
+
+    </div>
     <div className='flex grow w-full'>
-    <UserNavigation setChoosedCategory={setChoosedCategory} choosedCategory={choosedCategory} categories={categories} />
-    <UserSounds setCurrentSound={clickOnUserSound}/>
-  </div>
+      <UserNavigation setChoosedCategory={setChoosedCategory} choosedCategory={choosedCategory} categories={categories}/>
+      <UserSounds setCurrentSound={clickOnUserSound} currentSoundId={currentSound?.id}/>
+    </div>
     <div>
-      <Player />
+      <Player sound={currentSound}/>
     </div>
   </React.Fragment>
 
